@@ -1,0 +1,47 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<h2>Questionários Respondidos</h2>
+
+<!-- Selecionador para escolher o formulário -->
+<form method="get" action="">
+    <label for="formulario_id">Selecione um formulário:</label>
+    <select name="formulario_id" id="formulario_id" onchange="this.form.submit()">
+        <option value="">-- Selecione um formulário --</option>
+        {% for formulario in formularios_respondidos %}
+            <option value="{{ formulario.id }}" {% if formulario.id == selected_formulario_id %}selected{% endif %}>
+                Data: {{ formulario.data_resposta }} - Pontuação: {{ formulario.pontuacao_total }}
+            </option>
+        {% endfor %}
+    </select>
+</form>
+
+<!-- Exibição dos detalhes do formulário selecionado -->
+{% if selected_formulario %}
+    <ul>
+        <li><strong>Data da resposta:</strong> {{ selected_formulario.data_resposta }}</li>
+        <li><strong>Pergunta 2:</strong> {{ selected_formulario.pergunta_2 }}</li>
+        <li><strong>Pergunta 3:</strong> {{ selected_formulario.pergunta_3 }}</li>
+        <li><strong>Pergunta 4:</strong> {{ selected_formulario.pergunta_4 }}</li>
+        <li><strong>Pergunta 5a:</strong> {{ selected_formulario.pergunta_5a }}</li>
+        <li><strong>Pergunta 5b:</strong> {{ selected_formulario.pergunta_5b }}</li>
+        <li><strong>Pergunta 5c:</strong> {{ selected_formulario.pergunta_5c }}</li>
+        <li><strong>Pergunta 5d:</strong> {{ selected_formulario.pergunta_5d }}</li>
+        <li><strong>Pergunta 5e:</strong> {{ selected_formulario.pergunta_5e }}</li>
+        <li><strong>Pergunta 5f:</strong> {{ selected_formulario.pergunta_5f }}</li>
+        <li><strong>Pergunta 5g:</strong> {{ selected_formulario.pergunta_5g }}</li>
+        <li><strong>Pergunta 5h:</strong> {{ selected_formulario.pergunta_5h }}</li>
+        <li><strong>Pergunta 5i:</strong> {{ selected_formulario.pergunta_5i }}</li>
+        <li><strong>Pergunta 5ja:</strong> {{ selected_formulario.pergunta_5ja }}</li>
+        <li><strong>Pergunta 5jb:</strong> {{ selected_formulario.pergunta_5jb }}</li>
+        <li><strong>Pergunta 6:</strong> {{ selected_formulario.pergunta_6 }}</li>
+        <li><strong>Pergunta 7:</strong> {{ selected_formulario.pergunta_7 }}</li>
+        <li><strong>Pergunta 8:</strong> {{ selected_formulario.pergunta_8 }}</li>
+        <li><strong>Pergunta 9:</strong> {{ selected_formulario.pergunta_9 }}</li>
+        <li><strong>Pergunta 10:</strong> {{ selected_formulario.pergunta_10 }}</li>
+        <li><strong>Resultado:</strong> {{ selected_formulario.pontuacao_total }}</li>
+    </ul>
+{% else %}
+    <p>Selecione um formulário para ver os detalhes.</p>
+{% endif %}
+{% endblock %}
