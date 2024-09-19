@@ -3,44 +3,44 @@ from django.contrib.auth.models import AbstractUser
 import datetime
 
 class CustomUser(AbstractUser):
-    data_nascimento = models.DateField(null=True, blank=False)
+    birth_date = models.DateField(null=True, blank=False)
 
-class FormularioPSQI(models.Model):
-    titulo = models.CharField(max_length=255, default='Questionário PSQI')
-    descricao = models.TextField(default='Por favor, responda às perguntas abaixo para avaliar a qualidade do seu sono.')
+class FormPSQI(models.Model):
+    title = models.CharField(max_length=255, default='Questionário PSQI')
+    description= models.TextField(default='Por favor, responda às perguntas abaixo para avaliar a qualidade do seu sono.')
 
     def __str__(self):
-        return self.titulo
+        return self.title
 
-class RespostaPSQI(models.Model):
-    formulario = models.ForeignKey(FormularioPSQI, on_delete=models.CASCADE, editable=False)
-    usuario = models.ForeignKey(CustomUser, on_delete=models.CASCADE, editable=False)
-    data_resposta = models.DateField(default=datetime.date.today, editable=False)
+class AnswerPSQI(models.Model):
+    form = models.ForeignKey(FormPSQI, on_delete=models.CASCADE, editable=False)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, editable=False)
+    answer_date = models.DateField(default=datetime.date.today, editable=False)
 
-    # Perguntas
-    pergunta_1 = models.IntegerField()
-    pergunta_2 = models.IntegerField()
-    pergunta_3 = models.IntegerField()
-    pergunta_4 = models.IntegerField()
-    pergunta_5a = models.IntegerField()
-    pergunta_5b = models.IntegerField()
-    pergunta_5c = models.IntegerField()
-    pergunta_5d = models.IntegerField()
-    pergunta_5e = models.IntegerField()
-    pergunta_5f = models.IntegerField()
-    pergunta_5g = models.IntegerField()
-    pergunta_5h = models.IntegerField()
-    pergunta_5i = models.IntegerField()
-    pergunta_5ja = models.TextField()
-    pergunta_5jb = models.IntegerField()
-    pergunta_6 = models.IntegerField()
-    pergunta_7 = models.IntegerField()
-    pergunta_8 = models.IntegerField()
-    pergunta_9 = models.IntegerField()
-    pergunta_10 = models.IntegerField()
+    # questions
+    question_1 = models.IntegerField()
+    question_2 = models.IntegerField()
+    question_3 = models.IntegerField()
+    question_4 = models.IntegerField()
+    question_5a = models.IntegerField()
+    question_5b = models.IntegerField()
+    question_5c = models.IntegerField()
+    question_5d = models.IntegerField()
+    question_5e = models.IntegerField()
+    question_5f = models.IntegerField()
+    question_5g = models.IntegerField()
+    question_5h = models.IntegerField()
+    question_5i = models.IntegerField()
+    question_5ja = models.TextField()
+    question_5jb = models.IntegerField()
+    question_6 = models.IntegerField()
+    question_7 = models.IntegerField()
+    question_8 = models.IntegerField()
+    question_9 = models.IntegerField()
+    question_10 = models.IntegerField()
 
 
-    pontuacao_total = models.IntegerField()
+    total_score = models.IntegerField(editable=False)
 
     # Cálculo da pontuação do PSQL
 
@@ -59,13 +59,13 @@ class RespostaPSQI(models.Model):
     # • Menos de 1 vez/semana = 1 ponto
     # • 1 a 2 vezes/semana = 2 pontos
     # • 2 a 3 vezes/semana = 3 pontos (Não precisa de cálculo)
-    def calcular_pontuacao_item_2(self):
-        self.pergunta_2 = int(self.pergunta_2)
-        if self.pergunta_2 <= 15:
+    def calculate_score_item_2(self):
+        self.question_2 = int(self.question_2)
+        if self.question_2 <= 15:
             return 0
-        elif 16 <= self.pergunta_2 <= 30:
+        elif 16 <= self.question_2 <= 30:
             return 1
-        elif 31 <= self.pergunta_2 <= 60:
+        elif 31 <= self.question_2 <= 60:
             return 2
         else:
             return 3
@@ -76,12 +76,12 @@ class RespostaPSQI(models.Model):
     # • 6 a 7 horas = 1 ponto
     # • 5 a 6 horas = 2 pontos
     # • < 5 horas = 3 pontos
-    def calcular_pontuacao_item_3(self):
-        if self.pergunta_4 > 7:
+    def calculate_score_item_3(self):
+        if self.question_4 > 7:
             return 0
-        elif 6 <= self.pergunta_4 <= 7:
+        elif 6 <= self.question_4 <= 7:
             return 1
-        elif 5 <= self.pergunta_4 < 6:
+        elif 5 <= self.question_4 < 6:
             return 2
         else:
             return 3
@@ -98,8 +98,8 @@ class RespostaPSQI(models.Model):
     # • 65 a 74% = 2 pontos
     # • <65% = 3 pontos
 
-    def calcular_pontuacao_item_4(self):
-        total = (self.pergunta_4 / (self.pergunta_3 - self.pergunta_1)) * 100
+    def calculate_score_item_4(self):
+        total = (self.question_4 / (self.question_3 - self.question_1)) * 100
         if total >= 85:
             return 0
         elif 84 >= total >= 75:
@@ -120,18 +120,18 @@ class RespostaPSQI(models.Model):
     # • 10 a 18 = 2 pontos
     # • 19 a 27 = 3 pontos
 
-    def calcular_pontuacao_item_5(self):
+    def calculate_score_item_5(self):
         total = 0
-        total += self.pergunta_5a
-        total += self.pergunta_5b
-        total += self.pergunta_5c
-        total += self.pergunta_5d
-        total += self.pergunta_5e
-        total += self.pergunta_5f
-        total += self.pergunta_5g
-        total += self.pergunta_5h
-        total += self.pergunta_5i
-        total += self.pergunta_5jb
+        total += self.question_5a
+        total += self.question_5b
+        total += self.question_5c
+        total += self.question_5d
+        total += self.question_5e
+        total += self.question_5f
+        total += self.question_5g
+        total += self.question_5h
+        total += self.question_5i
+        total += self.question_5jb
         if total == 0:
             return 0
         elif 9 >= total >= 1:
@@ -150,8 +150,8 @@ class RespostaPSQI(models.Model):
     # • 1 a 2 = 1 ponto
     # • 3 a 4 = 2 pontos
     # • 5 a 6 = 3 pontos
-    def calcular_pontuacao_item_7(self):
-        total = self.pergunta_8 + self.pergunta_9
+    def calculate_score_item_7(self):
+        total = self.question_8 + self.question_9
         if total == 0:
             return 0
         elif 1 >= total >= 2:
@@ -162,22 +162,21 @@ class RespostaPSQI(models.Model):
             return 3
             
     # Calcula a pontuação total com base nas respostas.
-    def calcular_pontuacao_total(self):
-        pontuacao = 0
-        pontuacao += self.calcular_pontuacao_item_2()
-        pontuacao += self.calcular_pontuacao_item_3()
-        pontuacao += self.calcular_pontuacao_item_4()
-        pontuacao += self.calcular_pontuacao_item_5()
-        pontuacao += self.calcular_pontuacao_item_7()
-        pontuacao += self.pergunta_5a
-        pontuacao += self.pergunta_6
-        pontuacao += self.pergunta_7
-        return pontuacao
+    def calculate_total_score(self):
+        score = 0
+        score += self.calculate_score_item_2()
+        score += self.calculate_score_item_3()
+        score += self.calculate_score_item_4()
+        score += self.calculate_score_item_5()
+        score += self.calculate_score_item_7()
+        score += self.question_5a
+        score += self.question_6
+        score += self.question_7
+        return score
 
     def __str__(self):
-        return f'Resposta de {self.usuario} para {self.formulario}'
+        return f'Resposta de {self.user} para {self.form}'
 
     def save(self, *args, **kwargs):
-        # Calcular a pontuação antes de salvar
-        self.pontuacao_total = self.calcular_pontuacao_total()
+        self.total_score = self.calculate_total_score()
         super().save(*args, **kwargs)

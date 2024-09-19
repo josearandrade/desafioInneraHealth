@@ -1,0 +1,45 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<h2>Questionários Respondidos</h2>
+
+<form method="get" action="">
+    <label for="form_id">Selecione um formulário:</label>
+    <select name="form_id" id="form_id" onchange="this.form.submit()">
+        <option value="">-- Selecione um formulário --</option>
+        {% for form in forms_answered%}
+            <option value="{{ form.id }}" {% if form.id == selected_form_id %}selected{% endif %}>
+                Data: {{ form.answer_date }} - Pontuação: {{ form.total_score }}
+            </option>
+        {% endfor %}
+    </select>
+</form>
+
+{% if selected_form %}
+    <ul>
+        <li><strong>Data da resposta:</strong> {{ selected_form.answer_date }}</li>
+        <li><strong>Pergunta 2:</strong> {{ selected_form.question_2 }}</li>
+        <li><strong>Pergunta 3:</strong> {{ selected_form.question_3 }}</li>
+        <li><strong>Pergunta 4:</strong> {{ selected_form.question_4 }}</li>
+        <li><strong>Pergunta 5a:</strong> {{ selected_form.question_5a }}</li>
+        <li><strong>Pergunta 5b:</strong> {{ selected_form.question_5b }}</li>
+        <li><strong>Pergunta 5c:</strong> {{ selected_form.question_5c }}</li>
+        <li><strong>Pergunta 5d:</strong> {{ selected_form.question_5d }}</li>
+        <li><strong>Pergunta 5e:</strong> {{ selected_form.question_5e }}</li>
+        <li><strong>Pergunta 5f:</strong> {{ selected_form.question_5f }}</li>
+        <li><strong>Pergunta 5g:</strong> {{ selected_form.question_5g }}</li>
+        <li><strong>Pergunta 5h:</strong> {{ selected_form.question_5h }}</li>
+        <li><strong>Pergunta 5i:</strong> {{ selected_form.question_5i }}</li>
+        <li><strong>Pergunta 5ja:</strong> {{ selected_form.question_5ja }}</li>
+        <li><strong>Pergunta 5jb:</strong> {{ selected_form.question_5jb }}</li>
+        <li><strong>Pergunta 6:</strong> {{ selected_form.question_6 }}</li>
+        <li><strong>Pergunta 7:</strong> {{ selected_form.question_7 }}</li>
+        <li><strong>Pergunta 8:</strong> {{ selected_form.question_8 }}</li>
+        <li><strong>Pergunta 9:</strong> {{ selected_form.question_9 }}</li>
+        <li><strong>Pergunta 10:</strong> {{ selected_form.question_10 }}</li>
+        <li><strong>Resultado:</strong> {{ selected_form.total_score }}</li>
+    </ul>
+{% else %}
+    <p>Selecione um formulário para ver os detalhes.</p>
+{% endif %}
+{% endblock %}

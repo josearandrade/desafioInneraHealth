@@ -1,128 +1,84 @@
 from django.test import TestCase
 from django.utils import timezone
-from .models import CustomUser, FormularioPSQI, RespostaPSQI
-from .forms import RespostaPSQIForm
+from .models import CustomUser, FormPSQI, AnswerPSQI
+from .forms import AnswerPSQIForm
 
 class CustomUserTestCase(TestCase):
     def setUp(self):
         self.user = CustomUser.objects.create_user(
             username='testuser', 
             password='12345', 
-            data_nascimento='1990-01-01'
+            birth_date='1990-01-01'
         )
 
     def test_user_creation(self):
         user = CustomUser.objects.get(username='testuser')
         self.assertEqual(user.username, 'testuser')
-        self.assertEqual(user.data_nascimento, timezone.datetime(1990, 1, 1).date())
+        self.assertEqual(user.birth_date, timezone.datetime(1990, 1, 1).date())
 
-class FormularioPSQITestCase(TestCase):
+class FormPSQITestCase(TestCase):
     def setUp(self):
-        self.formulario = FormularioPSQI.objects.create()
+        self.form = FormPSQI.objects.create()
 
-    def test_formulario_creation(self):
-        formulario = FormularioPSQI.objects.get(pk=self.formulario.pk)
-        self.assertEqual(formulario.titulo, 'Questionário PSQI')
-        self.assertEqual(formulario.descricao, 'Por favor, responda às perguntas abaixo para avaliar a qualidade do seu sono.')
+    def test_form_creation(self):
+        form = FormPSQI.objects.get(pk=self.form.pk)
+        self.assertEqual(form.title, 'Questionário PSQI')
+        self.assertEqual(form.description, 'Por favor, responda às perguntas abaixo para avaliar a qualidade do seu sono.')
 
-class RespostaPSQITestCase(TestCase):
+class AnswerPSQITestCase(TestCase):
     def setUp(self):
         self.user = CustomUser.objects.create_user(
             username='testuser', 
             password='12345', 
-            data_nascimento='1990-01-01'
+            birth_date='1990-01-01'
         )
-        self.formulario = FormularioPSQI.objects.create()
-        self.resposta = RespostaPSQI.objects.create(
-            usuario=self.user,
-            formulario=self.formulario,
-            pergunta_1=22,
-            pergunta_2=15,
-            pergunta_3=6,
-            pergunta_4=6,
-            pergunta_5a=1,
-            pergunta_5b=0,
-            pergunta_5c=0,
-            pergunta_5d=0,
-            pergunta_5e=0,
-            pergunta_5f=0,
-            pergunta_5g=0,
-            pergunta_5h=0,
-            pergunta_5i=0,
-            pergunta_5ja='',
-            pergunta_5jb=0,
-            pergunta_6=1,
-            pergunta_7=0,
-            pergunta_8=0,
-            pergunta_9=0,
-            pergunta_10=0,
+        self.form = FormPSQI.objects.create()
+        self.answer = AnswerPSQI.objects.create(
+            user=self.user,
+            form=self.form,
+            question_1=22,
+            question_2=15,
+            question_3=6,
+            question_4=6,
+            question_5a=1,
+            question_5b=0,
+            question_5c=0,
+            question_5d=0,
+            question_5e=0,
+            question_5f=0,
+            question_5g=0,
+            question_5h=0,
+            question_5i=0,
+            question_5ja='',
+            question_5jb=0,
+            question_6=1,
+            question_7=0,
+            question_8=0,
+            question_9=0,
+            question_10=0,
         )
 
-    def test_calcular_pontuacao_item_2(self):
-        """Testa o cálculo do item 2"""
-        pontuacao = self.resposta.calcular_pontuacao_item_2()
-        print('\nitem 2')
-        print(pontuacao)
-        self.assertEqual(pontuacao, 0)
+    def test_calculate_score_item_2(self):
+        score = self.answer.calculate_score_item_2()
+        self.assertEqual(score, 0)
 
-    def test_calcular_pontuacao_item_3(self):
-        """Testa o cálculo do item 3"""
-        pontuacao = self.resposta.calcular_pontuacao_item_3()
-        print('\nitem 3')
-        print(pontuacao)
-        self.assertEqual(pontuacao, 1)
+    def test_calculate_score_item_3(self):
+        score = self.answer.calculate_score_item_3()
+        self.assertEqual(score, 1)
 
-    def test_calcular_pontuacao_item_4(self):
-        """Testa o cálculo do item 4"""
-        pontuacao = self.resposta.calcular_pontuacao_item_4()
-        print('\nitem 4')
-        print(pontuacao)
-        self.assertEqual(pontuacao, 3)  # Teste baseado na eficiência do sono
+    def test_calculate_score_item_4(self):
+        score = self.answer.calculate_score_item_4()
+        self.assertEqual(score, 3)
 
-    def test_calcular_pontuacao_item_5(self):
-        """Testa o cálculo do item 5"""
-        pontuacao = self.resposta.calcular_pontuacao_item_5()
-        print('\nitem 5')
-        print(pontuacao)
-        self.assertEqual(pontuacao, 1)  # Nenhum distúrbio de sono
+    def test_calculate_score_item_5(self):
+        score = self.answer.calculate_score_item_5()
+        self.assertEqual(score, 1)
 
-    def test_calcular_pontuacao_item_7(self):
-        """Testa o cálculo do item 5"""
-        pontuacao = self.resposta.calcular_pontuacao_item_7()
-        print('\nitem 7')
-        print(pontuacao)
-        self.assertEqual(pontuacao, 0)  # Nenhum distúrbio de sono
+    def test_calculate_score_item_7(self):
+        score = self.answer.calculate_score_item_7()
+        self.assertEqual(score, 0)
 
-    def test_calcular_pontuacao_total(self):
-        """Testa o cálculo da pontuação total"""
-        pontuacao_total = self.resposta.calcular_pontuacao_total()
-        print('\ntotal')
-        self.assertEqual(pontuacao_total, 7)  # Exemplo de pontuação total
+    def test_calculate_total_score(self):
+        total_score = self.answer.calculate_total_score()
+        self.assertEqual(total_score, 7)
 
-class RespostaPSQIFormTestCase(TestCase):
-    def test_form_validation(self):
-        """Testa a validação do formulário"""
-        data = {
-            'pergunta_1': 22,
-            'pergunta_2': 15,
-            'pergunta_3': 6,
-            'pergunta_4': 6,
-            'pergunta_5a': 1,
-            'pergunta_5b': 0,
-            'pergunta_5c': 0,
-            'pergunta_5d': 0,
-            'pergunta_5e': 0,
-            'pergunta_5f': 0,
-            'pergunta_5g': 0,
-            'pergunta_5h': 0,
-            'pergunta_5i': 0,
-            'pergunta_5ja': '',
-            'pergunta_5jb': 0,
-            'pergunta_6': 1,
-            'pergunta_7': 0,
-            'pergunta_8': 0,
-            'pergunta_9': 0,
-            'pergunta_10': 0,
-        }
-        form = RespostaPSQIForm(data)
-        

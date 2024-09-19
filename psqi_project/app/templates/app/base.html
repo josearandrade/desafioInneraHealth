@@ -12,14 +12,13 @@
         <nav>
             <ul>
                 <li><a href="{% url 'index' %}">Início</a></li>
-                <li><a href="{% url 'meus_formularios' %}">Meus Formulários</a></li>
+                <li><a href="{% url 'my_forms' %}">Meus Formulários</a></li>
             </ul>
         </nav>
     </header>
 
     <main>
         {% block content %}
-        <!-- Este bloco será substituído nos templates filhos -->
         {% endblock %}
     </main>
 

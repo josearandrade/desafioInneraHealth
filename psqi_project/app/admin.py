@@ -1,21 +1,17 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import RespostaPSQI, FormularioPSQI, CustomUser
+from .models import AnswerPSQI, FormPSQI, CustomUser
 
-# Register your models here.
-admin.site.register(FormularioPSQI)
-admin.site.register(RespostaPSQI)
+admin.site.register(FormPSQI)
+admin.site.register(AnswerPSQI)
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
-    # Opcional: customize os campos exibidos no admin
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('data_nascimento',)}),  # Campos extras
+        (None, {'fields': ('birth_date',)}), 
     )
 
     add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {'fields': ('data_nascimento',)}),
+        (None, {'fields': ('birth_date',)}),
     )
-
-    # Configura as opções de listagem no painel
-    list_display = ['username', 'email', 'data_nascimento', 'is_staff', 'is_active']
+    list_display = ['username', 'email', 'birth_date', 'is_staff', 'is_active']

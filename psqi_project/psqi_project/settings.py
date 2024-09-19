@@ -128,6 +128,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-# Usar o novo modelo de usuario
+# New User Model
 AUTH_USER_MODEL = 'app.CustomUser'
 

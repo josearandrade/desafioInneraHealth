@@ -3,10 +3,10 @@ from . import views
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    # Página inicial
+    # Home
     path('', views.index, name='index'),
 
-    # Login e logout usando as views prontas do Django
+    # Login and logout
     path('login/', auth_views.LoginView.as_view(template_name='app/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 
@@ -16,12 +16,11 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
-    # View para registro de usuários
+    # Register
     path('register/', views.register, name='register'),
 
-    # Formularios
-    path('formulario/<int:formulario_id>/responder/', views.responder_psqi, name='responder_psqi'),
-    path('lista_formulario/', views.lista_formularios, name='lista_formularios'),
-    path('meus-formularios/', views.meus_formularios, name='meus_formularios'),
-    # ... outras rotas
+    # Forms
+    path('form/<int:form_id>/answer/', views.answer_psqi, name='answer_psqi'),
+    path('forms_list/', views.forms_list, name='forms_list'),
+    path('my_forms/', views.my_forms, name='my_forms'),
 ]
