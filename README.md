@@ -36,7 +36,7 @@ Desenvolver uma aplicação web que permita aos usuários preencher o Questioná
 
 ### Pré-requisitos
 - Python 3.x
-- Django (ou outras tecnologias escolhidas)
+- Django
 - Dependências listadas em `requirements.txt`
 
 ### Passos para Configuração
