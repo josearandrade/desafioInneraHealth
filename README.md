@@ -44,6 +44,17 @@ Desenvolver uma aplicação web que permita aos usuários preencher o Questioná
    ```bash
    git clone https://github.com/josearandrade/desafioInnera.git
    cd psqi_project
+2. Crie e ative um virtualenv:
+   ```bash
+   python3 -m venv venv
+No linux:
+   ```bash
+   source venv/bin/activate
+   ```
+No windows:
+   ```bash
+   venv\Scripts\activate
+   ```
 2. Instale as dependências:
    ```bash
    pip install -r requirements.txt
