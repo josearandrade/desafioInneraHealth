@@ -18,9 +18,9 @@ class AnswerPSQI(models.Model):
     answer_date = models.DateField(default=datetime.date.today, editable=False)
 
     # questions
-    question_1 = models.IntegerField()
+    question_1 = models.CharField(max_length=5, help_text="Formato: HH:MM")
     question_2 = models.IntegerField()
-    question_3 = models.IntegerField()
+    question_3 = models.CharField(max_length=5, help_text="Formato: HH:MM")
     question_4 = models.IntegerField()
     question_5a = models.IntegerField()
     question_5b = models.IntegerField()
@@ -38,7 +38,6 @@ class AnswerPSQI(models.Model):
     question_8 = models.IntegerField()
     question_9 = models.IntegerField()
     question_10 = models.IntegerField()
-
 
     total_score = models.IntegerField(editable=False)
 
@@ -98,8 +97,23 @@ class AnswerPSQI(models.Model):
     # • 65 a 74% = 2 pontos
     # • <65% = 3 pontos
 
+    def time_to_minutes(self, time_str):
+        if time_str:
+            hours, minutes = map(int, time_str.split(":"))
+            return hours * 60 + minutes
+        return 0  # Retorna 0 caso o valor esteja vazio ou inválido
+
     def calculate_score_item_4(self):
-        total = (self.question_4 / (self.question_3 - self.question_1)) * 100
+        question_1_minutes = self.time_to_minutes(self.question_1)
+        question_3_minutes = self.time_to_minutes(self.question_3)
+        question_4_minutes = self.question_4 * 60  # Horas de sono convertidas para minutos
+
+        # Evitar divisão por zero
+        if question_3_minutes - question_1_minutes == 0:
+            total = (question_4_minutes / 1) * 100
+        else:
+            total = (question_4_minutes / (question_3_minutes - question_1_minutes)) * 100
+
         if total >= 85:
             return 0
         elif 84 >= total >= 75:
@@ -174,9 +188,19 @@ class AnswerPSQI(models.Model):
         score += self.question_7
         return score
 
+    
+
     def __str__(self):
         return f'Resposta de {self.user} para {self.form}'
 
     def save(self, *args, **kwargs):
         self.total_score = self.calculate_total_score()
         super().save(*args, **kwargs)
+
+def get_score_message(score):
+    if score <= 5:
+        return f"Sua qualidade de sono é {score} e é considerada saudável!"
+    elif 6 <= score <= 10:
+        return f"Sua qualidade de sono é {score}, o que é considerada moderadamente comprometida."
+    else:
+        return f"Sua qualidade de sono é {score} e está preocupante. Recomenda-se procurar um especialista."

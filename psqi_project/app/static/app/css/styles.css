@@ -1,0 +1,48 @@
+.form-check{
+    min-width: 75%;
+    max-width: 75%;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.form-check-title{
+    min-width: 50%;
+    max-width: 75%;
+    text-align: left;
+}
+
+.form-check-label{
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .form-check, .form-check-title {
+        min-width: 10%;
+        max-width: 10%;
+        text-align: center;
+    }
+
+    .form-check-title {
+        margin-bottom: 15px;
+    }
+}
+
+.answer-label{
+    min-width: 70vh;
+    max-width: 70vh;
+}
+.answer-value{
+    min-width: 70vh;
+    max-width: 70vh;
+    vertical-align: middle;
+}
+ /* Estilo para o corpo e conteúdo rolável */
+.body {
+    overflow-y: auto;
+    height: 100vh;
+    margin: 0;
+}
+.content {
+    overflow-y: auto;
+    height: calc(100vh - 56px); /* Altura do navbar */
+}

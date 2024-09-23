@@ -1,0 +1,18 @@
+{% extends 'base/base_dashboard.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <h1>Bem-vindo, {{ user_info.username }}!</h1>
+    <div>
+        <a href="{% url 'answer_psqi' %}" class="btn btn-outline-primary">Responder Formulário PSQI</a>
+    </div>
+    <div>
+        <h3>Evolução por Pergunta</h3>
+        <div>{{ plot_div|safe }}</div>
+    </div>
+    <div>
+        <h3>Gráfico de Pontuação Total</h3>
+        <div>{{ total_score_plot_div|safe }}</div>
+    </div>
+{% endblock %}

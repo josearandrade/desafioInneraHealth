@@ -7,7 +7,6 @@
 </head>
 <body>
     <h1>Resultados do Questionário PSQI</h1>
-
     <ul>
         {% for key, value in data.items %}
             <li><strong>{{ key }}:</strong> {{ value }}</li>
@@ -15,5 +14,15 @@
     </ul>
 
     <a href="{% url 'psqi_questionnaire' %}">Refazer o questionário</a>
+
+    <h2>Resultados do Questionário</h2>
+    <p>Sua pontuação total: {{ total_score }}</p>
+
+    {% if can_save %}
+        <p>Para salvar suas respostas, <a href="{% url 'register' %}">registre-se</a>.</p>
+    {% else %}
+        <p>Obrigado por responder! Suas respostas foram salvas.</p>
+    {% endif %}
+
 </body>
 </html>

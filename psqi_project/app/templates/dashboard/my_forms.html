@@ -1,0 +1,133 @@
+{% extends 'base/base_dashboard.html' %}
+
+{% block content %}
+<h2>Questionários Respondidos</h2>
+
+<form method="get" action="">
+    <label for="form_id">Selecione um formulário:</label>
+    <select name="form_id" id="form_id" onchange="this.form.submit()">
+        <option value="">{{ form.answer_date }}</option>
+        {% for form in forms_answered%}
+            <option value="{{ form.id }}" {% if form.id == selected_form_id %}selected{% endif %}>
+                Data: {{ form.answer_date }} - Pontuação: {{ form.total_score }}
+            </option>
+        {% endfor %}
+    </select>
+</form>
+
+
+
+{% if selected_form %}
+    <div class="container mt-4">
+        <h2>Detalhes do Formulário</h2>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Campo</th>
+                    <th class="d-flex justify-content-center answer-value">Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="answer-label"><strong>Data da Resposta</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.answer_date }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.0 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_1 }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.1 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_2 }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.2 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_3 }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.3 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_4 }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.4 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_5a }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.5 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_5b }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.6 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_5c }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.7 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_5d }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.8 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_5e }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.9 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_5f }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.10 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_5g }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.11 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_5h }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.12 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_5i }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.13 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_5ja }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.14 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_5jb }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.15 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_6 }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.16}}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_7 }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.17 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_8 }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.18 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_9 }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>{{ question_labels.19 }}</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.question_10 }}</td>
+                </tr>
+                <tr>
+                    <td class="answer-label"><strong>Resultado</strong></td>
+                    <td class="d-flex justify-content-center answer-value">{{ selected_form.total_score }}</td>
+                </tr>
+            </tbody>
+            
+            
+        </table>
+    </div>
+{% else %}
+    <div class="alert alert-warning mt-4">
+        <p>Selecione um formulário para ver os detalhes.</p>
+    </div>
+{% endif %}
+
+<div class="alert alert-info">
+    {{ score_message }}
+</div>
+{% endblock %}

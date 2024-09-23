@@ -1,0 +1,64 @@
+{% extends 'base/base_auth.html' %}
+
+{% block title %}Cadastrar{% endblock %}
+
+{% block content %}
+
+<main class="form-signin w-100 m-auto" style="max-width: 400px;">
+    <form method="POST">
+        {% csrf_token %}
+        <h1 class="h3 mb-3 fw-normal text-center">Cadastrar</h1>
+
+        <!-- Nome de usuário -->
+        <div class="form-floating mb-3">
+            <input type="text" name="username" class="form-control" id="floatingUsername" placeholder="Nome de usuário" value="{{ form.username.value|default:'' }}" required>
+            <label for="floatingUsername">Nome de usuário</label>
+            {% if form.username.errors %}
+                <div class="text-danger">{{ form.username.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Data de Nascimento -->
+        <div class="form-floating mb-3">
+            <input type="date" name="birth_date" class="form-control" id="floatingBirthDate" placeholder="Data de Nascimento" value="{{ form.birth_date.value|default:'' }}" required>
+            <label for="floatingBirthDate">Data de Nascimento</label>
+            {% if form.birth_date.errors %}
+                <div class="text-danger">{{ form.birth_date.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Email -->
+        <div class="form-floating mb-3">
+            <input type="email" name="email" class="form-control" id="floatingEmail" placeholder="name@example.com" value="{{ form.email.value|default:'' }}" required>
+            <label for="floatingEmail">Email</label>
+            {% if form.email.errors %}
+                <div class="text-danger">{{ form.email.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Senha -->
+        <div class="form-floating mb-3">
+            <input type="password" name="password1" class="form-control" id="floatingPassword" placeholder="Senha" required>
+            <label for="floatingPassword">Senha</label>
+            {% if form.password1.errors %}
+                <div class="text-danger">{{ form.password1.errors }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Confirmar Senha -->
+        <div class="form-floating mb-3">
+            <input type="password" name="password2" class="form-control" id="floatingPasswordConfirm" placeholder="Confirmar Senha" required>
+            <label for="floatingPasswordConfirm">Confirmar Senha</label>
+            {% if form.password2.errors %}
+                <div class="text-danger">{{ form.password2.errors }}</div>
+            {% endif %}
+        </div>
+
+        <button class="btn btn-primary w-100 py-2" type="submit">Cadastrar</button>
+    </form>
+    <div class="text-center mt-3">
+        <p>Já tem uma conta? <a href="{% url 'login' %}">Entre aqui</a></p>
+    </div>
+</main>
+
+{% endblock %}

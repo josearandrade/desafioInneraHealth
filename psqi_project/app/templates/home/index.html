@@ -1,0 +1,26 @@
+{% extends 'base/base_home.html' %}
+
+{% block title %}Início{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-12 text-center">
+            <h1>Bem-vindo ao Questionário PSQI</h1>
+            <p>Avalie a qualidade do seu sono com o Questionário de Qualidade do Sono de Pittsburgh.</p>
+        </div>
+    </div>
+    <div class="row mb-5">
+        <div class="col-md-12 text-center">
+            <a href="{% url 'answer_psqi' %}" class="btn btn-primary btn-lg">Responder Questionário</a>
+        </div>
+    </div>
+    <div class="row mb-4 mt-5">
+        <div class="col-md-12 text-center">
+            <p class="lead">
+                <h4>Este site foi desenvolvido para o desafio InneraHealth.</h4>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

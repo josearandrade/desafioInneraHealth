@@ -1,0 +1,698 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dashboard{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'app/css/styles.css' %}">
+    {% block extra_css %}{% endblock %}
+    <style>
+        body {
+            overflow-y: auto;
+            height: 100vh;
+            margin: 0;
+        }
+        .content {
+            overflow-y: auto;
+            height: calc(100vh - 56px); 
+        }
+    </style>
+</head>
+<main class="form-signin w-100 m-auto p-4 content">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="w-75">
+            <h1 class="h3 mb-4 fw-normal">ÍNDICE DA QUALIDADE DO SONO DE PITTSBURGH – VERSÃO PORTUGUÊS BRASILEIRO (PSQI-BR)</h1>
+            <p>As seguintes perguntas são relativas aos seus hábitos de sono durante o <b>último mês somente.</b> Suas respostas devem indicar a lembrança mais exata
+                da <b>maioria</b> dos dias e noites do último mês. Por favor, responda a todas as perguntas.</p>
+        </div>
+        <div class="row">
+            <div class="col-12 mb-3 ">
+                <label for="floatingQuestion1" class="question-title">{{ form.question_1.label }}</label>
+                <div class="form-floating">
+                    <input type="text" name="question_1" class="form-control w-75"  id="floatingQuestion1" placeholder="HH:MM" value="{{ form.question_1.value|default:'' }}" oninput="formatTime(this)">
+                    <label for="floatingQuestion1">Quando você foi para a cama? (HH:MM)</label>
+                    {% if form.question_1.errors %}
+                        <div class="text-danger">{{ form.question_1.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-12 mb-3">
+                <label for="floatingQuestion2" class="question-title">{{ form.question_2.label }}</label>
+                <div class="form-floating">
+                    <input type="number" name="question_2" class="form-control w-75" id="floatingQuestion2" placeholder="Minutos" value="{{ form.question_2.value|default:'' }}" oninput="validateMinutes(this)">
+                    <label for="floatingQuestion2">Número de minutos</label>
+                    {% if form.question_2.errors %}
+                        <div class="text-danger">{{ form.question_2.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-12 mb-3">
+                <label for="floatingQuestion3" class="question-title">{{ form.question_3.label }}</label>
+                <div class="form-floating">
+                    <input type="text" name="question_3" class="form-control w-75" id="floatingQuestion3" placeholder="HH:MM" value="{{ form.question_3.value|default:'' }}" oninput="formatTime(this)">
+                    <label for="floatingQuestion3">Hora usual de levantar? (HH:MM)</label>
+                    {% if form.question_3.errors %}
+                        <div class="text-danger">{{ form.question_3.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-12 mb-3">
+                <label for="floatingQuestion4" class="question-title">{{ form.question_4.label }}</label>
+                <div class="form-floating">
+                    <input type="number" name="question_4" class="form-control w-75" id="floatingQuestion4" placeholder="Horas" value="{{ form.question_4.value|default:'' }}" oninput="convertToMinutes(this)">
+                    <label for="floatingQuestion4">Horas de sono por noite</label>
+                    {% if form.question_4.errors %}
+                        <div class="text-danger">{{ form.question_4.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <p>Para cada uma das questões restantes, marque a <b>melhor (uma)</b> resposta. Por favor, responda a todas as questões.</p>
+        <table class="table table-bordered form-check">
+            <thead class="align-middle">
+                <tr>
+                    <th class="form-check-title">5. Durante o último mês, com que frequência você teve
+                        dificuldade para dormir porque você...</th>
+                    <th>Nenhuma no último mês</th>
+                    <th>Menos de uma vez na por semana</th>
+                    <th>Uma ou duas vezes por semana</th>
+                    <th>Três ou mais vezes na semana</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="form-check-title">{{ form.question_5a.label }}</td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5a.0.tag }}
+                            <span class="form-check-label">
+                                {{ form.question_5a.0.choice_label }}
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5a.1.tag }}
+                            <span class="form-check-label">
+                                {{ form.question_5a.1.choice_label }}
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5a.2.tag }}
+                            <span class="form-check-label">
+                                {{ form.question_5a.2.choice_label }}
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5a.3.tag }}
+                            <span class="form-check-label">
+                                {{ form.question_5a.3.choice_label }}
+                            </span>
+                        </label>
+                    </td>
+                      
+                </tr>
+                <tr>
+                    <td class="form-check-title">{{ form.question_5b.label }}</td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5b.0.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5b.0.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5b.1.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5b.1.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5b.2.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5b.2.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5b.3.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5b.3.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-check-title">{{ form.question_5c.label }}</td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5c.0.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5c.0.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5c.1.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5c.1.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5c.2.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5c.2.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5c.3.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5c.3.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-check-title">{{ form.question_5d.label }}</td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5d.0.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5d.0.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5d.1.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5d.1.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5d.2.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5d.2.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5d.3.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5d.3.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-check-title">{{ form.question_5e.label }}</td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5e.0.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5e.0.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5e.1.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5e.1.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5e.2.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5e.2.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5e.3.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5e.3.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-check-title">{{ form.question_5f.label }}</td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5f.0.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5f.0.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5f.1.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5f.1.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5f.2.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5f.2.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5f.3.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5f.3.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-check-title">{{ form.question_5g.label }}</td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5g.0.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5g.0.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5g.1.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5g.1.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5g.2.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5g.2.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5g.3.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5g.3.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-check-title">{{ form.question_5h.label }}</td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5h.0.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5h.0.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5h.1.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5h.1.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5h.2.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5h.2.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5h.3.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5h.3.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form-check-title">{{ form.question_5i.label }}</td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5i.0.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5i.0.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5i.1.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5i.1.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5i.2.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5i.2.choice_label }}
+                            </label>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                            {{ form.question_5i.3.tag }}
+                            <label class="form-check-label">
+                                {{ form.question_5i.3.choice_label }}
+                            </label>
+                        </label>
+                    </td>   
+                </tr>
+                <tr>
+                    <td>
+                        <label class="form-check-title form-floating mb-3">
+                            <input type="text" name="question_5ja" class="form-control" id="floatingQuestion5ja" value="{{ form.question_5ja.value|default:'' }}">
+                            <label for="floatingQuestion5aj">{{ form.question_5ja.label }}</label>
+                            {% if form.question_5ja.errors %}
+                                <div class="text-danger">{{ form.question_5ja.errors }}</div>
+                            {% endif %}
+                            {{ form.question_5jb.label }}
+                        </label>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_5jb.0.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_5jb.0.choice_label }}
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_5jb.1.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_5jb.1.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_5jb.2.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_5jb.2.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_5jb.3.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_5jb.3.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                    </td>
+                    <tr>
+                        <td class="form-check-title"><b>{{ form.question_6.label }}</b></td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_6.0.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_6.0.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_6.1.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_6.1.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_6.2.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_6.2.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_6.3.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_6.3.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                    </tr>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <hr class="my-2">
+                    </td>
+                </tr>
+            </tbody>
+            <table class="table table-bordered form-check">
+                <thead class="align-middle">
+                    <tr>
+                        <th class="form-check-title"></th>
+                        <th>Nenhuma no último mês</th>
+                        <th>Menos de uma vez na por semana</th>
+                        <th>Uma ou duas vezes por semana</th>
+                        <th>Três ou mais vezes na semana</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="form-check-title fw-bold">{{ form.question_7.label }}</td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_7.0.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_7.0.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_7.1.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_7.1.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_7.2.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_7.2.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_7.3.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_7.3.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="form-check-title fw-bold">{{ form.question_8.label }}</td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_8.0.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_8.0.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_8.1.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_8.1.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_8.2.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_8.2.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_8.3.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_8.3.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="form-check-title fw-bold">{{ form.question_9.label }}</td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_9.0.tag }}
+                            </label>    
+                            {{ form.question_9.0.choice_label }}
+                        </td>
+                        <td>
+                            
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_9.1.tag }}
+                            </label>
+                            {{ form.question_9.1.choice_label }}
+                        </td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_9.2.tag }}
+                            </label>
+                            {{ form.question_9.2.choice_label }}
+                        </td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_9.3.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_9.3.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="form-check-title fw-bold">{{ form.question_10.label }}</td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_10.0.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_10.0.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_10.1.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_10.1.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_10.2.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_10.2.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="form-check" style="display: block; width: 100%; cursor: pointer;">
+                                {{ form.question_10.3.tag }}
+                                <label class="form-check-label">
+                                    {{ form.question_10.3.choice_label }}
+                                </label>
+                            </label>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </table>
+        <button class="btn btn-primary w-75 py-2" type="submit">Enviar Respostas</button>
+    </form>
+</main>
+
+
+<script>
+    function formatTime(input) {
+        let value = input.value.replace(/[^0-9]/g, '');
+
+        if (value.length > 4) {
+        value = value.slice(0, 4);
+        }   
+
+        if (value.length > 2 && !value.includes(':')) {
+            value = value.slice(0, 2) + ':' + value.slice(2);
+        }
+
+        input.value = value;
+        validateTime(input);
+    }
+
+    function validateTime(input) {
+        
+        const value = input.value;
+        const regex = /^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$/;
+
+        if (!regex.test(value)) {
+            input.setCustomValidity("Por favor, insira um horário válido no formato HH:MM.");
+        } else {
+            input.setCustomValidity("");
+        }
+    }
+
+
+    function validateMinutes(input) {
+        const value = input.value;
+        
+        if (value < 0 || value > 120) {
+            input.setCustomValidity("Por favor, insira um valor válido em minutos (até 120).");
+        } else {
+            input.setCustomValidity("");
+        }
+    }
+    function convertToMinutes(input) {
+        const hours = parseFloat(input.value);
+        if (!isNaN(hours)) {
+            const totalMinutes = hours * 60;
+            // Aqui você pode fazer o que quiser com totalMinutes, como enviar ao backend ou armazenar em uma variável.
+            console.log("Total em minutos:", totalMinutes);
+        } else {
+            // Tratar caso inválido
+            console.log("Por favor, insira um número válido.");
+        }
+    }
+    </script>
+</html>
+

@@ -1,0 +1,8 @@
+{% extends 'base/base_home.html' %}
+
+{% block content %}
+<h2>Resultados do Questionário</h2>
+<p>{{ score_message }}</p>
+<p>Para salvar suas respostas, você precisa se registrar.</p>
+<a href="{% url 'register' %}">Registrar</a>
+{% endblock %}

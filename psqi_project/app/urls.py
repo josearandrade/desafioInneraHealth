@@ -1,14 +1,18 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
-    # Home
+    #   
     path('', views.index, name='index'),
+    path('form_guest/answer/', views.answer_psqi, name='answer_psqi'),
 
     # Login and logout
-    path('login/', auth_views.LoginView.as_view(template_name='app/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('accounts/login/', views.login, name='login'),
+    path('accounts/logout/', LogoutView.as_view(next_page='index'), name='logout'),
+    # Register
+    path('register/', views.register, name='register'),
 
     # Password
     path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
@@ -16,11 +20,10 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
-    # Register
-    path('register/', views.register, name='register'),
+    # Dashboard and forms
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('dashboard/my_forms/', views.my_forms, name='my_forms'),
+    path('registration/register_or_login/', views.register_or_login, name='register_or_login'),
 
-    # Forms
-    path('form/<int:form_id>/answer/', views.answer_psqi, name='answer_psqi'),
-    path('forms_list/', views.forms_list, name='forms_list'),
-    path('my_forms/', views.my_forms, name='my_forms'),
+    
 ]
