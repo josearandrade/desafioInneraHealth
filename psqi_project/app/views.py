@@ -207,7 +207,7 @@ def dashboard(request):
 ### Form Views
 
 def answer_psqi(request):
-    form_psqi = get_object_or_404(FormPSQI, id=1)
+    form_psqi, created = FormPSQI.objects.get_or_create(id=1)
 
     # If user is logged in, handle the form normally
     if request.user.is_authenticated:

@@ -1,73 +1,62 @@
-# desafioInnera
-Aplicação feita para o desafio de implementação Innera Health
+# Desafio de Implementação: Aplicação de Questionário PSQI
 
-# Documentação de Requisitos
+## Objetivo
+Desenvolver uma aplicação web que permita aos usuários preencher o Questionário de Qualidade do Sono de Pittsburgh (PSQI) e visualizar os resultados de forma organizada.
 
-## 1. Introdução
+## Tecnologias Utilizadas
+- **Backend**: Django
+- **Frontend**: HTML, CSS (Bootstrap), JS
+- **Banco de Dados**: SQLite
 
-Esta documentação descreve os requisitos para o desenvolvimento de uma aplicação web que permita ao usuário preencher o Questionário de Qualidade do Sono de Pittsburgh (PSQI) e visualizar os resultados de forma organizada.
+## Funcionalidades
+1. **Interface do Questionário PSQI**
+   - Página para preencher todas as perguntas do PSQI com diferentes tipos de resposta (múltipla escolha, escalas, texto livre).
 
-## 2. Objetivo
+2. **Validação de Dados**
+   - Validações para garantir que todas as perguntas obrigatórias sejam respondidas corretamente.
 
-Desenvolver uma aplicação web interativa para o preenchimento e análise do PSQI, fornecendo uma interface intuitiva para o usuário, validação dos dados inseridos, exibição de resultados e armazenamento das respostas para consulta futura.
+3. **Resultados**
+   - Após o envio do questionário, o usuário é redirecionado para uma página que mostra suas respostas e calcula a pontuação total do PSQI, com explicações sobre o significado da pontuação.
 
-## 3. Requisitos Funcionais
+4. **Armazenamento de Dados**
+   - Respostas do questionário armazenadas em um banco de dados e visualização do histórico de respostas.
 
-### 3.1. Interface do Questionário PSQI
+5. **Autenticação**
+   - Funcionalidades de registro e login para que os usuários possam salvar e acessar seus próprios questionários e resultados.
 
-- **Descrição:** A aplicação deve apresentar uma página web com todas as perguntas do PSQI conforme o PDF fornecido.
-- **Detalhes:**
-  - **Perguntas:** Reproduzir todas as perguntas do questionário de maneira fiel.
-  - **Tipos de Respostas:**
-    - **Múltipla Escolha:** Permitir seleção entre opções predefinidas.
-    - **Escalas:** Permitir seleção de valores dentro de uma escala (por exemplo, 0 a 3).
-    - **Texto Livre:** Campos para respostas em texto livre (e.g., horas dormidas, tempo para adormecer).
+## Estrutura do Projeto
+- `/psqi_project/`
+  - `/app/` - Código fonte da aplicação
+  - `/templates/` - Templates HTML
+  - `/static/` - Arquivos estáticos (CSS, JS)
+  - `manage.py` - Script para gerenciar o projeto Django
+- `requirements.txt` - Dependências do projeto
 
-### 3.2. Validação de Dados
+## Como Executar o Projeto
 
-- **Descrição:** Garantir a integridade e a validade dos dados inseridos pelo usuário.
-- **Detalhes:**
-  - **Perguntas Obrigatórias:** Verificar se todas as perguntas obrigatórias foram respondidas antes de permitir o envio do formulário.
-  - **Validações Específicas:**
-    - **Valores Numéricos:** Assegurar que respostas numéricas (e.g., horas e minutos) estejam dentro de intervalos válidos.
-    - **Escalas:** Verificar se as respostas em escala estão dentro dos valores permitidos.
+### Pré-requisitos
+- Python 3.x
+- Django (ou outras tecnologias escolhidas)
+- Dependências listadas em `requirements.txt`
 
-### 3.3. Resultados
+### Passos para Configuração
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/josearandrade/desafioInnera.git
+   cd psqi_project
+2. Instale as dependências:
+   ```bash
+   pip install -r requirements.txt
+3. Execute as migrações:
+   ```bash
+   python manage.py migrate
+4. Inicie o servidor de desenvolvimento:
+   ```bash
+   python manage.py runserver 
+5. Acesse a aplicação em http://localhost:8000
 
-- **Descrição:** Após o envio do questionário, redirecionar o usuário para uma página de resultados.
-- **Detalhes:**
-  - **Exibição de Respostas:** Mostrar todas as respostas fornecidas pelo usuário.
-  - **Cálculo da Pontuação:** Calcular e exibir a pontuação total do PSQI.
-  - **Explicação da Pontuação:** Fornecer uma breve explicação sobre o que a pontuação indica, incluindo a interpretação clínica (por exemplo, o que uma pontuação acima de um determinado valor representa em termos de qualidade do sono).
 
-### 3.4. Armazenamento de Dados
 
-- **Descrição:** Salvar as respostas do questionário e permitir a visualização do histórico.
-- **Detalhes:**
-  - **Formato de Armazenamento:** Utilizar um banco de dados simples, como SQLite, ou um arquivo JSON para armazenar as respostas.
-  - **Histórico de Respostas:** Implementar uma funcionalidade que permita ao usuário visualizar e comparar seu histórico de respostas ao longo do tempo.
 
-## 4. Requisitos Não Funcionais
-
-### 4.1. Tecnologias
-
-- **Back-End:**
-  - **Opções:** Python (Flask ou Django) ou Node.js.
-- **Front-End:**
-  - **Opções:** HTML/CSS/JavaScript, ou frameworks como React.
-
-### 4.2. Interface Responsiva
-
-- **Descrição:** A aplicação deve ter uma interface responsiva que funcione adequadamente em dispositivos móveis.
-
-### 4.3. Experiência do Usuário
-
-- **Descrição:** Garantir uma experiência de usuário intuitiva e eficiente, especialmente para o preenchimento de respostas em texto livre.
-
-### 4.4. Visualização Gráfica (Extras Desejáveis)
-
-- **Descrição:** Utilizar ferramentas como Chart.js ou Plotly para exibir visualizações gráficas das pontuações anteriores.
-
-### 4.5. Autenticação Simples (Extras Desejáveis)
-
-- **Descrição:** Implementar um sistema de login para permitir que os usuários salvem e acessem seus questionários e resultados.a
+# Contato
+Para mais informações, entre em contato com joseandrade.work@gmail.com
