@@ -53,7 +53,7 @@ No linux:
    ```
 No windows:
    ```bash
-   venv\Scripts\activate
+   .venv\Scripts\activate
    ```
 2. Instale as dependências:
    ```bash
